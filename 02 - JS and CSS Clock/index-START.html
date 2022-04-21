@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+      <div class="hand hour-hand"></div>
     </div>
+  </div>
 
 
   <style>
@@ -43,17 +45,18 @@
       position: relative;
       padding: 2rem;
       box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
+        0 0 0 4px rgba(0, 0, 0, 0.1),
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock-face {
       position: relative;
-      width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
     }
 
     .hand {
@@ -62,13 +65,57 @@
       background: black;
       position: absolute;
       top: 50%;
+      right: 50%;
+      transform-origin: right;
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+      transform: rotate(90deg);
     }
 
+    .hour-hand {
+      width: 25%;
+      top: 50%;
+      right: 45%;
+      transform-origin: 85% 50% 0;
+    }
+
+    .second-hand,
+    .min-hand {
+      width: 60%;
+      top: 50%;
+      right: 40%;
+      transform-origin: 85% 50% 0;
+    }
   </style>
 
   <script>
+    const CLOCK_SECONDS = 60;
+    const CLOCK_MINUTES = 60;
+    const CLOCK_HOURS = 12;
+    const MAX_DEGREES = 360;
 
+    function updateClock(offset = 90) {
+      const now = new Date();
+      const secondsDegrees = ((now.getSeconds() / CLOCK_SECONDS) * MAX_DEGREES) + offset;
+      const minutesDegrees = ((now.getMinutes() / CLOCK_MINUTES) * MAX_DEGREES) + offset;
+      const hoursDegrees = ((now.getHours() / CLOCK_HOURS) * MAX_DEGREES) + offset;
+      const secondHand = document.querySelector('.second-hand');
+      const minuteHand = document.querySelector('.min-hand');
+      const hourHand = document.querySelector('.hour-hand');
+      const allHands = document.querySelectorAll('.hand');
+      // prevent 360 degrees hand transition glitch
+      if (secondsDegrees === 90) {
+        allHands.forEach(hand => hand.style.transition = "none");
+      } else {
+        allHands.forEach(hand => hand.style.transition = "");
+      }
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+    }
 
+    setInterval(updateClock, 1000);
   </script>
 </body>
+
 </html>
