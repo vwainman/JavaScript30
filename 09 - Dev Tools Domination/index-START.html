@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Console Tricks!</title>
 </head>
+
 <body>
 
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
@@ -18,29 +20,60 @@
     }
 
     // Regular
+    console.log("hello");
 
     // Interpolated
+    const string = "here is my content";
+    console.log("%s", string);
+    console.log(`${string}`);
 
-    // Styled
+
+    // Styled - %c before log you'd like styled
+    console.log("%c test", 'font-size:25px; background:red;')
 
     // warning!
+    console.warn("this is a warning");
 
     // Error :|
+    console.error("error in console, SHIT! includes stack trace");
 
     // Info
+    console.info("provides info")
 
     // Testing
+    console.assert(1 === 2, "that is wrong");
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.log(p); // val
+    console.dir(p); // methods and properties
 
-    // Grouping together
+    // Grouping
+    console.group("Johnny Depp");
+    console.log("Allegedly abused Amber Heard");
+    console.groupEnd("Johnny Depp");
+    console.group("Amber Heard");
+    console.log("Has a lawyer from Wish");
+    console.groupEnd("Amber Heard");
 
     // counting
+    console.count('times this comes up');
+    console.count('times this comes up');
 
-    // timing
+    // timing - measure of time between time and timeEnd for something to run
+    console.time("Fetching data");
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data');
+        console.log(data);
+      });
+
+    // tables - console.table();
 
   </script>
 </body>
+
 </html>
