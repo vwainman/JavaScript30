@@ -1,56 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Reference VS Copy</title>
 </head>
+
 <body>
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100;
+    let age2 = age; //copies val, NOT ref
+    console.log(age, age2); // 100, 100
+    age = 200;
+    console.log(age, age2); // 200, 100
+    // the same applies with strings and bools
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
-
-    // and we want to make a copy of it.
+    const playersCopy = players; // <- POINTER COPY!
+    console.log(players, playersCopy);
 
     // You might think we can just do something like this:
-
-    // however what happens when we update that array?
-
-    // now here is the problem!
-
-    // oh no - we have edited the original array too!
-
-    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+    playersCopy[3] = "Lux"; //copies ref, NOT val
+    //playersCopy = [...,'Lux']
+    //players = [...,'Lux']
 
     // So, how do we fix this? We take a copy instead!
-
     // one way
-
+    const playersValCopy = players.slice(); //.slice() w/ no args copies vals
     // or create a new array and concat the old one in
-
+    const playersValCopy2 = [].concat(players);
     // or use the new ES6 Spread
-
-    // now when we update it, the original one isn't changed
+    const playersValCopy3 = [...players]; // spread(...) copies every iterable item and spits it out
+    // or Array method
+    const playersValCopy4 = Array.from(players);
+    // *** USE THE ABOVE TWO WAYS  ***
 
     // The same thing goes for objects, let's say we have a person object
-
     // with Objects
     const person = {
       name: 'Wes Bos',
       age: 80
     };
-
-    // and think we make a copy:
+    const refCopy = person;
+    refCopy.age = 99; // changes in both
 
     // how do we take a copy instead?
+    const valCopy = Object.assign({}, person, { number: 99, age: 12 });
+    //const valCopy1 = { ...person }; not in vanilla js yet
 
-    // We will hopefully soon see the object ...spread
-
-    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
-
+    // *** NOTE: THESE ARE ONLY SHALLOW COPIES - COPIES ONE LEVEL DOWN ***
+    const vince = {
+      'name': 'vince',
+      age: 100,
+      social: {
+        twitter: '@vwainman',
+        facebook: 'vwainman.developer'
+      }
+    }
+    const shallowValCopy = Object.assign({}, vince); // ONE LEVEL DEEP!
+    vince.social.twitter = '@vwain';
+    console.log(vince.social.twitter); // will equal '@vwain'
+    // to do a perfect copy, use CLONEDEEP! - BUT VERY RARE TO CLONE OBJECTS THAT DEEP!
   </script>
 
 </body>
+
 </html>
