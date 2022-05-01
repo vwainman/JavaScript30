@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Videos</title>
 </head>
+
 <body>
   <ul class="videos">
     <li data-time="5:43">
@@ -181,7 +183,29 @@
       Video 58
     </li>
   </ul>
-<script>
-</script>
+  <script>
+    const MAX_SECONDS = 60
+    const MAX_MINUTES = 60
+    const timeNodes = Array.from(document.querySelectorAll('[data-time]'));
+    // dataset.<attribute> refers to val in html data-<attribute>
+    const seconds = timeNodes.map(node => {
+      // can't use parseInt here since it confuses its optional radix arg as being used as an index
+      // when map passes in three args to the callback function? don't know, see https://stackoverflow.com/questions/16158986/array-map-and-parseint-woes
+      const [mins, secs] = node.dataset.time.split(':').map(parseFloat);
+      return (mins * 60) + secs;
+    });
+    const totalSeconds = seconds.reduce((total, seconds) => total + seconds, 0);
+    let secondsLeft = totalSeconds;
+    console.log(secondsLeft);
+    const hours = Math.floor(secondsLeft / (MAX_SECONDS * MAX_MINUTES));
+    secondsLeft = secondsLeft % (MAX_SECONDS * MAX_MINUTES);
+    const minutes = Math.floor(secondsLeft / MAX_MINUTES);
+    secondsLeft = secondsLeft % MAX_MINUTES;
+    const totalTime = `${hours}:${minutes}:${secondsLeft}`;
+    console.log(totalTime);
+
+
+  </script>
 </body>
+
 </html>
