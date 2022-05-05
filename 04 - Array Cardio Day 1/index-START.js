@@ -79,5 +79,6 @@ const stringOccurences = data.reduce((obj, item) => {
   }
   obj[item]++;
   return obj;
-}, {});
+}, {} //blank object (i.e. dict)
+);
 console.log(stringOccurences);
